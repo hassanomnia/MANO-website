@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Sign up</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="signing.css">
+    </head>
+    <body style="background-image:linear-gradient(white, #5a88ca)">
+        <!--    <body style="background-color: #5a88ca">-->
+    <center>
+        <p style="font-family:Brush Script MT; font-size: 40px; font-weight: 700;">
+            Welcome to MANO Store!
+
+        </p>
+        <div class="cardHeading" style="display:inline-block; margin-right:20px;">
+            <img src="https://tr2.cbsistatic.com/hub/i/r/2017/04/24/3bd1d175-2b26-409d-a9ba-c825f0852f34/resize/770x/5a46b86712f9cc2d817f5ba0b2e9d146/ecommerce.jpg" height="520px" width="360px"> 
+        </div>
+        <div class="cardBody" style="display:inline-block; margin-left: 20px">
+            <center>
+                <form style="align-content: center">
+
+
+                    <p style="font-family:Comic Sans MS;">
+                        please fill the following form carefully...
+                    </p>
+                    <br/> <br/> 
+                    <label style="font-family:Comic Sans MS;">User name: </label>
+                    <input type="text" class="txtbox" name="userName" id="userName" placeholder="Enter user name"/>
+                    <br/> <br/> <br/>
+
+                    <label style="font-family:Comic Sans MS;">Email: </label>
+                    <input type="text" class="txtbox" name="email" id="email" placeholder="Enter your email"/>
+                    <br/> <br/> <br/>
+
+                    <label style="font-family:Comic Sans MS;">Password: </label>
+                    <input type="password" class="txtbox" name="Password" id="Password" placeholder="Enter your paaword"/>
+                    <br/> <br/> <br/>
+
+                    <!--                    <label style="font-family:Comic Sans MS;">Image: </label>
+                                        <input type="text" name="Image"/>
+                                        <br/> <br/> <br/>-->
+
+                    <label style="font-family:Comic Sans MS;">Birthday: </label>
+                    <input type="date" class="txtbox" name="Birthday" id="Birthday" />
+                    <br/> <br/> <br/>
+
+                    <label style="font-family:Comic Sans MS;">Address: </label>
+                    <input type="text" class="txtbox" name="Address" id="Address" placeholder="Enter your Address"/>
+                    <br/> <br/> <br/>
+
+                    <label style="font-family:Comic Sans MS;">Job: </label>
+                    <input type="text" class="txtbox" name="job" id="job" placeholder="Enter your jeb profile"/>
+                    <br/> <br/>
+
+                    <label style="font-family:Comic Sans MS;">Interests: </label>
+                    <br/> <br/>
+                    <input type="checkbox" name="phone" id="phone" value="Phones"/>
+                    <label style="font-family:Comic Sans MS;">Phones </label>
+                    <br/> <br/>
+                    <input type="checkbox" name="laptop" id="laptop" value="Laptops"/>
+                    <label style="font-family:Comic Sans MS;">Laptops </label>
+                    <br/> <br/> <br/>
+
+
+                    <input class="btnstyle" type="submit" value="Sign Up" formaction="signupServlet">
+                </form>
+            </center>
+        </div>
+        <br>
+        <br>
+
+        <p style="font-family:Comic Sans MS;display: inline">already have an account?</p>
+        <button class="btnstyle" style="display: inline"><a href="signIn.html">sign In</a></button>
+        <br>
+    </center>
+
+</body>
+</html>
