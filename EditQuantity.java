@@ -32,21 +32,9 @@ public class EditQuantity extends HttpServlet {
 
     Statement stmt;
     PreparedStatement stmt2;
-    Connection con;
     ResultSet result;
     int num;
-
-    @Override
-    public void init() throws ServletException {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/restore_try_schema", "root", "1211212224");
-            stmt = con.createStatement();
-
-        } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(EditQuantity.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+    //final String dbId;
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -62,12 +50,14 @@ public class EditQuantity extends HttpServlet {
             throws ServletException, IOException {
         //getting id:
         String idPara = request.getParameter("id");
-        //to have id even if of refreshing
-        HttpSession sessionParameters;
-        sessionParameters = request.getSession(true);
-        sessionParameters.setAttribute("editId", idPara);
-        String idField = (String) sessionParameters.getAttribute("editId");
-        String id_Para = request.getParameter("idForm");
+        //setting hidden input //to have id even if of refreshing
+        String hiddenId = idPara;
+        if (request.getParameterMap().containsKey("id")) {
+            hiddenId = request.getParameter("id");
+        } else if (request.getParameterMap().containsKey("idForm")) {
+            hiddenId = request.getParameter("idForm");
+        }
+
         //declaring and initailizing quantity value
         String quantityValue = "";
         //respone writter
@@ -160,6 +150,7 @@ public class EditQuantity extends HttpServlet {
                 + "                        <ul class=\"nav navbar-nav\">\n"
                 + "                            <li><a href=\"ProductServlet\">Products</a></li>\n"
                 + "                            <li><a href=\"ProfileServlet\">Customers</a></li>\n"
+                 + "                            <li><a href=\"www.google.com\">Add New Product</a></li>\n"
                 + "<li class=\"active\"><a href=\"ProductServlet\">Edit Quantity</a></li>\n"
                 + "\n"
                 + "                        </ul>\n"
@@ -167,32 +158,34 @@ public class EditQuantity extends HttpServlet {
                 + "                </div>\n"
                 + "            </div>\n"
                 + "        </div> <!-- End mainmenu area -->\n"
-                + "<center> <table> <tr><th style=\"padding: 15px; text-align: left;\">Product Id</th><th style=\"padding: 15px; text-align: left;\">Product Name</th><th style=\"padding: 15px; text-align: left;\">Product Price</th><th style=\"padding: 15px; text-align: left;\">Product code</th><th style=\"padding: 15px; text-align: left;\">Product category</th><th style=\"padding: 15px; text-align: left;\">Product Quantity</th><th style=\"padding: 15px; text-align: left;\"></th><th style=\"padding: 15px; text-align: left;\"></th><th style=\"padding: 15px; text-align: left;\"></th></tr>"
+                + "<center> <table> <tr><th style=\"padding: 15px; text-align: center;\">Product Id</th><th style=\"padding: 15px; text-align: center;\">Product Name</th><th style=\"padding: 15px; text-align: center;\">Product Price</th><th style=\"padding: 15px; text-align: center;\">Product code</th><th style=\"padding: 15px; text-align: center;\">Product category</th><th style=\"padding: 15px; text-align: center;\">Product Quantity</th><th style=\"padding: 15px; text-align: center;\"></th><th style=\"padding: 15px; text-align: center;\"></th><th style=\"padding: 15px; text-align: center;\"></th></tr>"
                 + "<br><br><br> <center>\n"
-                + "  <form> <input type=\"hidden\" value=\"" + idField + "\" name=\"idForm\"> <input type=\"text\" class=\"txtbox\" name=\"quantityValue\" placeholder=\"Enter new quantity here\" required>\n"
-                + "     <button class=\"tablebtn\" formaction=\"EditQuantity?quantityValue=" + quantityValue + "&idForm=" + idField+"\" >Submit</button>\n"
+                + "  <form> <input type=\"hidden\" value=\"" + hiddenId + "\" name=\"idForm\"> <input type=\"number\"  min=\"0\" class=\"txtbox\" name=\"quantityValue\" placeholder=\"Enter new quantity here\" required>\n"
+                + "     <button class=\"tablebtn\" formaction=\"EditQuantity?quantityValue=" + hiddenId + "&idForm=" + hiddenId + "\" >Submit</button>\n"
                 + "   </form><button class=\"tablebtn\" onclick=\"location.href='ProductServlet';\" >Cancel</button>\n"
                 + "   </center>"
         );
-        
-        //diplaying produt info:
-        
+
+        //getting data base connection:
+        ServletContext servletContext = getServletContext();
+        Connection c = (Connection) servletContext.getAttribute("getConnection");
+
         ResultSet retunSet;
-        retunSet = selectProduct(idPara);
-
+        //Retrieving single product info
+        retunSet = DataBaseManagement.selectSingleProduct(c, hiddenId);
+        //diplaying produt info:
         try {
-
             while (retunSet.next()) {
-                 Integer product_id = result.getInt("product_id");
-                String product_name = result.getString("name");
-                Long product_price = result.getLong("price");
-                String product_code = result.getString("code");
-                String product_category = result.getString("category");
-                Integer product_quantity = result.getInt("total_quantity");
+                Integer product_id = retunSet.getInt("product_id");
+                String product_name = retunSet.getString("name");
+                Long product_price = retunSet.getLong("price");
+                String product_code = retunSet.getString("code");
+                String product_category = retunSet.getString("category");
+                Integer product_quantity = retunSet.getInt("total_quantity");
 
-                pen.println("<tr> <td>" + product_id + "</td> <td>" + product_name + "</td> <td>" + product_price + "</td> <td>" + product_code + "</td><td>" + product_category + "</td><td>" + product_quantity + "</td>" + "</tr>");
-                pen.println("</center> </body> </html>");
+                pen.println("<tr align=\"center\"> <td>" + product_id + "</td> <td>" + product_name + "</td> <td>" + product_price + "</td> <td>" + product_code + "</td><td>" + product_category + "</td><td>" + product_quantity + "</td>" + "</tr>");
             }
+            pen.println("</center> </body> </html>");
         } catch (SQLException ex) {
             Logger.getLogger(EditQuantity.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -201,43 +194,13 @@ public class EditQuantity extends HttpServlet {
         if (request.getParameterMap().containsKey("quantityValue")) {
             quantityValue = request.getParameter("quantityValue");
             //if exists update in db
-            if (!(quantityValue.equals("")) ) {
-                updateQuantity(id_Para, quantityValue);
+            if (!(quantityValue.equals(""))) {
+                //update product quantity:
+                int j = DataBaseManagement.updateQuantity(c, Integer.parseInt(hiddenId), Integer.parseInt(quantityValue));
                 response.sendRedirect("ProductServlet");
-            } 
+            }
         }
 
         pen.println("</center> </body> </html>");
-    }
-
-    public void updateQuantity(String id, String para) {
-
-        try {
-            // result = stmt.executeQuery("select * from product");
-//CREATE TABLE product (    product_id serial primary key,    price double precision,    category text,    code text,    name text,    description text,    total_quantity integer,    image text);
-            //int pId = Integer.parseInt(id);
-            // int pQuant = Integer.parseInt(para);
-            stmt2 = con.prepareStatement("update restore_try_schema.product set total_quantity=? where product_id=?");
-            stmt2.setString(1, para);
-            stmt2.setString(2, id);
-            int i = stmt2.executeUpdate();
-            result = stmt.executeQuery("select * from product");
-        } catch (SQLException ex) {
-            Logger.getLogger(EditQuantity.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public ResultSet selectProduct(String para) {
-        try {
-            //int pId = Integer.parseInt(para);
-            stmt2 = con.prepareStatement("SELECT * FROM restore_try_schema.product WHERE product_id=? ");
-            stmt2.setString(1, para);
-            result = stmt2.executeQuery();
-
-//CREATE TABLE product (    product_id serial primary key,    price double precision,    category text,    code text,    name text,    description text,    total_quantity integer,    image text);
-        } catch (SQLException ex) {
-            Logger.getLogger(ProductServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return result;
     }
 }

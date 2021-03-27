@@ -36,18 +36,6 @@ public class deletefromDb2 extends HttpServlet {
     ResultSet result;
     int num;
 
-    @Override
-    public void init() throws ServletException {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/restore_try_schema", "root", "1211212224");
-            stmt = con.createStatement();
-
-        } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(deletefromDb2.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -61,27 +49,11 @@ public class deletefromDb2 extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idPara = request.getParameter("id");
-        deleteFrmDb(idPara);
+        //deleteFrmDb(idPara);
+         //Retrieving all products from database
+        ServletContext servletContext = getServletContext();
+        Connection c = (Connection) servletContext.getAttribute("getConnection");
+        DataBaseManagement.deleteProfile(c, Integer.parseInt(idPara));
         response.sendRedirect("ProfileServlet");
     }
-
-    public void deleteFrmDb(String para) {
-
-        try {
-            // result = stmt.executeQuery("select * from product");
-//CREATE TABLE product (    product_id serial primary key,    price double precision,    category text,    code text,    name text,    description text,    total_quantity integer,    image text);
-            int pId = Integer.parseInt(para);
-            stmt2 = con.prepareStatement("DELETE FROM restore_try_schema.customer WHERE customer_id=?");
-            stmt2.setInt(1, pId);
-            int i = stmt2.executeUpdate();
-            
-
-//            while (result.next()) {
-//                }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(deletefromDb2.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
 }

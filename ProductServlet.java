@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,18 +32,6 @@ public class ProductServlet extends HttpServlet {
     Connection con;
     ResultSet result;
     int num;
-
-    @Override
-    public void init() throws ServletException {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/restore_try_schema", "root", "1211212224");
-            stmt = con.createStatement();
-
-        } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(ProductServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -121,7 +110,7 @@ public class ProductServlet extends HttpServlet {
                 + "                <div class=\"row\">\n"
                 + "                    <div class=\"col-sm-6\">\n"
                 + "                        <div class=\"logo\">\n"
-                + "                            <h1><img src=\"basicLogo.jpeg\" style=\"width:250px;height:200px;\"></h1>\n"
+                + "                            <h1><img src=\"basicLogo.jpeg\" style=\"width:250px;height:200px; display:inline\">  </h1>\n"
                 + "                        </div>\n"
                 + "                    </div>\n"
                 + "\n"
@@ -145,36 +134,42 @@ public class ProductServlet extends HttpServlet {
                 + "                        <ul class=\"nav navbar-nav\">\n"
                 + "                            <li class=\"active\"><a href=\"ProductServlet\">Products</a></li>\n"
                 + "                            <li><a href=\"ProfileServlet\">Customers</a></li>\n"
+                + "                            <li><a href=\"www.google.com\">Add New Product</a></li>\n"
                 + "\n"
                 + "                        </ul>\n"
                 + "                    </div>  \n"
                 + "                </div>\n"
                 + "            </div>\n"
                 + "        </div> <!-- End mainmenu area -->\n"
-                + "<center> <table> <tr><th style=\"padding: 15px; text-align: left;\">Product Id</th><th style=\"padding: 15px; text-align: left;\">Product Name</th><th style=\"padding: 15px; text-align: left;\">Product Price</th><th style=\"padding: 15px; text-align: left;\">Product code</th><th style=\"padding: 15px; text-align: left;\">Product category</th><th style=\"padding: 15px; text-align: left;\">Product Quantity</th><th style=\"padding: 15px; text-align: left;\"></th><th style=\"padding: 15px; text-align: left;\"></th><th style=\"padding: 15px; text-align: left;\"></th></tr>"
+                + "<center> <table style=\"width:120%\"> <tr align=\"center\"><th style=\"padding: 15px; text-align: center;\">Product Id</th><th style=\"padding: 15px; text-align: center;\">Product Name</th><th style=\"padding: 15px; text-align: center;\">Product Price</th><th style=\"padding: 15px; text-align: center;\">Product code</th><th style=\"padding: 15px; text-align: center;\">Product category</th><th style=\"padding: 15px; text-align: center;\">Product Quantity</th><th style=\"padding: 15px; text-align: center;\"></th><th style=\"padding: 15px; text-align: center;\"></th><th style=\"padding: 15px; text-align: center;\"></th></tr>"
         );
 
-        //Retrieving all products
+        //Retrieving all products from database
+        ServletContext servletContext = getServletContext();
+        Connection c = (Connection) servletContext.getAttribute("getConnection");
+        result = DataBaseManagement.selectAllProducts(c);
+
+        //displaying all products
         try {
-            result = stmt.executeQuery("select * from product");
-//CREATE TABLE product (    product_id serial primary key,    price double precision,    category text,    code text,    name text,    description text,    total_quantity integer,    image text);
-
             while (result.next()) {
+
                 Integer product_id = result.getInt("product_id");
-                String product_name = result.getString("name");
-                Long product_price = result.getLong("price");
-                String product_code = result.getString("code");
-                String product_category = result.getString("category");
-                Integer product_quantity = result.getInt("total_quantity");
+                if (product_id == 0) {
+                } else {
+                    String product_name = result.getString("name");
+                    Long product_price = result.getLong("price");
+                    String product_code = result.getString("code");
+                    String product_category = result.getString("category");
+                    Integer product_quantity = result.getInt("total_quantity");
 
-                pen.println("<tr> <td>" + product_id + "</td> <td>" + product_name + "</td> <td>" + product_price + "</td> <td>" + product_code + "</td><td>" + product_category + "</td><td>" + product_quantity + "</td>" + "<td><button class =\"tablebtn\" type=\"button\" onclick=\"location.href='EditQuantity?id=" + product_id + "';\">Edit quantity</button></td>" + "<td><button  class =\"tablebtn\" type=\"button\" onclick=\"location.href='EditPrice?id=" + product_id + "';\">Edit price</button></td>" + "<td><button  class =\"tablebtn\" type=\"button\" onclick=\"location.href='deleteFromDb?id=" + product_id + "';\">Delete</button></td>" + "</tr>");
-                pen.println("</center> </body> </html>");
+                    pen.println("<tr  align=\"center\"> <td>" + product_id + "</td> <td>" + product_name + "</td> <td>" + product_price + "</td> <td>" + product_code + "</td><td>" + product_category + "</td><td>" + product_quantity + "</td>" + "<td><button class =\"tablebtn\" type=\"button\" onclick=\"location.href='EditQuantity?id=" + product_id + "';\">Edit quantity</button></td>" + "<td><button  class =\"tablebtn\" type=\"button\" onclick=\"location.href='EditPrice?id=" + product_id + "';\">Edit price</button></td>" + "<td><button  class =\"tablebtn\" type=\"button\" onclick=\"location.href='deleteFromDb?id=" + product_id + "';\">Delete</button></td>" + "</tr>");
+
+                }
             }
-
+            pen.println("<br><br></center> </body> </html>");
         } catch (SQLException ex) {
             Logger.getLogger(ProductServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    
 }
