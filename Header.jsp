@@ -62,7 +62,7 @@
                             <li><a href="#"><i class="fa fa-user"></i> My Account</a></li>
                             <li><a href="cart.html"><i class="fa fa-user"></i> My Cart</a></li>
                             <li><a href="checkout.html"><i class="fa fa-user"></i> Checkout</a></li>
-                            <li><a href=<%out.println("/ShoppingWeb/SiginInPage.jsp?check="+log);%><i class="fa fa-user"></i><%if(logInFlag != null && logInFlag.equals("true")){%>    Logout<%}else{%>Login<%}%></a></li>
+                            <li><a href=<%out.println("/ShoppingWeb/SiginInPage.jsp?check="+log);%><i class="fa fa-user"></i><%if(logInFlag != null && logInFlag.equals("true")){%> Logout<%}else{%>Login<%}%></a></li>
                         </ul>
                     </div>
                 </div>
