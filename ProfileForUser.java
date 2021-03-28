@@ -55,7 +55,7 @@ public class ProfileForUser extends HttpServlet {
                         + "  \n"
                         + "        <div class=\"box\">\n"
                         + "            <div id=\"overlay\">\n"
-                        + "              <div class=\"image\">\n"
+                        + "              <div class=\"image\" style=\"background-image: url("+rs.getString(3)+");\">\n"
                         + "                <div class=\"trick\">\n"
                         + "        \n"
                         + "                </div>\n"
