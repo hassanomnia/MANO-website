@@ -162,7 +162,8 @@ and open the template in the editor.
                 sessionParameters.setAttribute("logInFlag", "true");
                 sessionParameters.setAttribute("userName", username);
                 sessionParameters.setAttribute("quanity", "0");
-                sessionParameters.setAttribute("id_product", "0");
+                sessionParameters.setAttribute("product_id", "0");
+                sessionParameters.setAttribute("customer_id", customer_id);
                 response.sendRedirect("Header.jsp");
             } else if (checkFlag.equals("false")) {
     %>

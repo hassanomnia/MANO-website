@@ -61,26 +61,27 @@ and open the template in the editor.
     <%
         if(username != null && passwd != null)
         {
+        String customer_id = "";
         ServletContext servletContext = this.getServletContext();
         Connection c= (Connection)servletContext.getAttribute("getConnection");
         String checkFlag = DataBaseManagement.checkSiginIn(c,username, passwd);
-        if(checkFlag.equals("admin"))
-        {
-          sessionParameters.setAttribute("userType", "admin");
-          sessionParameters.setAttribute("userType", "admin");
+        if(checkFlag != "false"){
+          customer_id = DataBaseManagement.getCustomerId(c,username);
           sessionParameters.setAttribute("logInFlag", "true");
           sessionParameters.setAttribute("userName", username);
           sessionParameters.setAttribute("quanity", "0");
-          sessionParameters.setAttribute("id_product", "0");
+          sessionParameters.setAttribute("product_id", "0");
+          sessionParameters.setAttribute("customer_id", customer_id);
+        }
+        if(checkFlag.equals("admin"))
+        {
+          sessionParameters.setAttribute("userType", "admin");
+          sessionParameters.setAttribute("customer_id", customer_id);
           response.sendRedirect("Header.jsp");
         }
         else if(checkFlag.equals("customer"))
         {
           sessionParameters.setAttribute("userType", "customer");
-          sessionParameters.setAttribute("logInFlag", "true");
-          sessionParameters.setAttribute("userName", username);
-          sessionParameters.setAttribute("quanity", "0");
-          sessionParameters.setAttribute("id_product", "0");
           response.sendRedirect("Header.jsp");
         }
         else if(checkFlag.equals("false"))

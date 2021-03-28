@@ -40,12 +40,20 @@
       HttpSession sessions = request.getSession(false);
       String logInFlag ="";
       String username ="";
+      String quanity ="";
+      String product_id ="";
+      String customer_id ="";
+      String userType ="";
       String url ="";
       String log ="";
         if (session != null) {
             
             username = (String) sessions.getAttribute("userName");
             logInFlag = (String) sessions.getAttribute("logInFlag");
+            quanity = (String) sessions.getAttribute("quanity");
+            product_id = (String) sessions.getAttribute("product_id");
+            customer_id = (String) sessions.getAttribute("customer_id");
+            userType = (String) sessions.getAttribute("userType");
             ServletContext servletContext = this.getServletContext();
             Connection c= (Connection)servletContext.getAttribute("getConnection");
             url = DataBaseManagement.getImageURL(c, username);
