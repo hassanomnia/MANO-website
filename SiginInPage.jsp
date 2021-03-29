@@ -29,13 +29,16 @@ and open the template in the editor.
         String username = request.getParameter("userName");
         String passwd = request.getParameter("Password");
         HttpSession sessionParameters;
-        sessionParameters = request.getSession(true);
-        String logIn = (String) sessionParameters.getAttribute("logInFlag");
-        String checkOutIN = request.getParameter("check");
-        if(checkOutIN != null && !checkOutIN.equals(""))
-        {if(checkOutIN.equals("out")){logIn="false";sessionParameters.setAttribute("logInFlag", "false");}else{logIn="true";sessionParameters.setAttribute("logInFlag", "true");}}
-        System.out.println(logIn);
-        if(logIn == null || logIn.equals("false") ){
+        sessionParameters = request.getSession(false);
+        
+        String check = request.getParameter("fromheader");
+         if (check != null && !check.equals("")) {
+                if (check.equals("in")) {
+                    sessionParameters.setAttribute("logInFlag", "false");
+                } 
+            }
+         String logIn = (String) sessionParameters.getAttribute("logInFlag");
+            if(logIn == null || logIn.equals("false") ){
             %>
         <div class="cardBody" style="display:inline-block; margin-left: 20px">
             <center>
@@ -69,20 +72,15 @@ and open the template in the editor.
           customer_id = DataBaseManagement.getCustomerId(c,username);
           sessionParameters.setAttribute("logInFlag", "true");
           sessionParameters.setAttribute("userName", username);
-          sessionParameters.setAttribute("quanity", "0");
-          sessionParameters.setAttribute("product_id", "0");
           sessionParameters.setAttribute("customer_id", customer_id);
         }
         if(checkFlag.equals("admin"))
         {
-          sessionParameters.setAttribute("userType", "admin");
-          sessionParameters.setAttribute("customer_id", customer_id);
           response.sendRedirect("Header.jsp");
         }
         else if(checkFlag.equals("customer"))
         {
-          sessionParameters.setAttribute("userType", "customer");
-          response.sendRedirect("Header.jsp");
+          response.sendRedirect("Header.jsp?check=in");
         }
         else if(checkFlag.equals("false"))
         {

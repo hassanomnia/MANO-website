@@ -39,7 +39,7 @@ and open the template in the editor.
                     String address = request.getParameter("Address");
                     String birthday = request.getParameter("Birthday");
                     HttpSession sessionParameters;
-                    sessionParameters = request.getSession(true);
+                    sessionParameters = request.getSession(false);
                     sessionParameters.setAttribute("name", username);
                     sessionParameters.setAttribute("pass", passwd);
                     sessionParameters.setAttribute("email", email);
@@ -158,13 +158,10 @@ and open the template in the editor.
                 String cart_id =  DataBaseManagement.insertCart_includes(c);
                 String customer_id =  DataBaseManagement.insertCustomer(c,Integer.parseInt(cart_id),radioValue,50000,birthday,address,username,email,passwd,job);
                 DataBaseManagement.insertUserInterests(c,Integer.parseInt(customer_id),checkbox1value,checkbox2value);
-                sessionParameters.setAttribute("userType", "customer");
                 sessionParameters.setAttribute("logInFlag", "true");
                 sessionParameters.setAttribute("userName", username);
-                sessionParameters.setAttribute("quanity", "0");
-                sessionParameters.setAttribute("product_id", "0");
                 sessionParameters.setAttribute("customer_id", customer_id);
-                response.sendRedirect("Header.jsp");
+                response.sendRedirect("Header.jsp?check=in");
             } else if (checkFlag.equals("false")) {
     %>
     <center>
