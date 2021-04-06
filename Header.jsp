@@ -37,14 +37,17 @@
     <body>
         <%
             String active = request.getParameter("action");
+            String log = "out";
             HttpSession sessions = request.getSession(true);
             String checkOutIN = request.getParameter("check");
             if (checkOutIN != null && !checkOutIN.equals("")) {
                 if (checkOutIN.equals("in")) {
                     sessions.setAttribute("logInFlag", "true");
+                    log = "in";
                 } 
             }
-            else{
+            else
+            {
                 sessions.setAttribute("logInFlag", "false");
                 sessions.setAttribute("userName", "0");
                 sessions.setAttribute("customer_id", "0");
@@ -141,14 +144,14 @@
                     <div class="navbar-collapse collapse">
                         <ul class="nav navbar-nav" id="demo">
 
-                            <li><a href="index.html?action=home" <%if (active != null && active.equals("home")) {%>style="background-color:#5a88ca; color: white"<%}%>class="links">Home</a></li>
+                            <li><a href="index.html?action=home&check=in" <%if (active == null || active.equals("home")) {%>style="background-color:#5a88ca; color: white"<%}%>class="links">Home</a></li>
                             <li><a href="shop.html?action=mobile" <%if (active != null && active.equals("mobile")) {%>style="background-color:#5a88ca; color: white"<%}%>class="links">Mobiles</a></li>
                             <li><a href="LaptopsPage?action=laptop" <%if (active != null && active.equals("laptop")) {%>style="background-color:#5a88ca; color: white"<%}%>class="links">Laptops</a></li>
                             <li><a href="SingleProductPage.jsp?action=single" <%if (active != null && active.equals("single")) {%>style="background-color:#5a88ca; color: white"<%}%> class="links">Single product</a></li>
                             <li><a href="SearchPage?action=search" <%if (active != null && active.equals("search")) {%>style="background-color:5a88ca; color: white"<%}%> class="links">Search</a></li>
                             <li><a href="cart.html?action=cart" <%if (active != null && active.equals("cart")) {%>style="background-color:5a88ca; color: white"<%}%>class="links">Cart</a></li>
-                            <li><a href="checkout.html?action=checkout" <%if (active != null && active.equals("checkout")) {%>style="background-color:5a88ca; color: white"<%}%>class="links">Checkout</a></li>
-                            <li><a href="#?action=about" <%if (active != null && active.equals("about")) {%>style="background-color:5a88ca; color: white"<%}%>class="links">About us</a></li>
+                            <li><a href=<%out.println("/ShoppingWeb/ChekOutPage.jsp?action=checkout&check="+log);%><%if (active != null && active.equals("checkout")) {%>style="background-color:#5a88ca; color: white"<%}%>class="links">Checkout</a></li>
+                            <li><a href="#?action=about" <%if (active != null && active.equals("about")) {%>style="background-color:#5a88ca; color: white"<%}%>class="links">About us</a></li>
                         </ul>
                     </div>  
                 </div>
