@@ -1,5 +1,4 @@
 
-<%@page import="web.shopping.ProfileForUser"%>
 <%@page import="web.shopping.DataBaseManagement"%>
 <jsp:directive.page import="java.io.IOException"></jsp:directive.page>
 <jsp:directive.page import="java.sql.Connection"></jsp:directive.page>
@@ -37,6 +36,7 @@
         if (request.getParameter("credit") != null) {
        DataBaseManagement.UpdateCartInfo(c, rs.getInt("customer_id"),Float.parseFloat(request.getParameter("credit").trim()));
     }
+        
     }
     rs = DataBaseManagement.getCustomerInfo(c, id);
     if (rs.next()) {
