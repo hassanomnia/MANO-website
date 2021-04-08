@@ -160,7 +160,7 @@ and open the template in the editor.
                 DataBaseManagement.insertUserInterests(c,Integer.parseInt(customer_id),checkbox1value,checkbox2value);
                 sessionParameters.setAttribute("logInFlag", "true");
                 sessionParameters.setAttribute("userName", username);
-                sessionParameters.setAttribute("customer_id", customer_id);
+                //sessionParameters.setAttribute("customer_id", customer_id);
                 response.sendRedirect("Header.jsp?check=in");
             } else if (checkFlag.equals("false")) {
     %>
