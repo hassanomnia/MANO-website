@@ -42,9 +42,14 @@ public class DataBaseManagement {
 
     static public ResultSet selectMobiles(Connection connection, int start, int end) {
         try {
-            preparedStatment = connection.prepareStatement("select * from (select row_number() over(order by code) as row_number,* from product where category='Mobile')as sub where row_number>=? and row_number<=?;");
-            preparedStatment.setInt(1, start);
-            preparedStatment.setInt(2, end);
+            if (end != 0) {
+                preparedStatment = connection.prepareStatement("select * from (select row_number() over(order by code) as row_number,* from product where category='Mobile')as sub where row_number>=? and row_number<=?;");
+                preparedStatment.setInt(1, start);
+                preparedStatment.setInt(2, end);
+            } else {
+                preparedStatment = connection.prepareStatement("select * from (select row_number() over(order by code) as row_number,* from product where category='Mobile')as sub where row_number>=?");
+                preparedStatment.setInt(1, start);
+            }
             result = preparedStatment.executeQuery();
         } catch (SQLException ex) {
             Logger.getLogger(DataBaseManagement.class.getName()).log(Level.SEVERE, null, ex);
@@ -97,6 +102,24 @@ public class DataBaseManagement {
         }
     }
     
+    static public void insertProduct(Connection connection, int id, String name, String category, String code, float price, float oldPrice, String description, int quantity, String imgURL){
+        try {
+            preparedStatment = connection.prepareStatement("insert into product values(?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            preparedStatment.setInt(1, id);
+            preparedStatment.setFloat(2, price);
+            preparedStatment.setString(3, category);
+            preparedStatment.setString(4, code);
+            preparedStatment.setString(5, name);
+            preparedStatment.setString(6, description);
+            preparedStatment.setInt(7, quantity);
+            preparedStatment.setString(8, imgURL);
+            preparedStatment.setFloat(9, oldPrice);
+            preparedStatment.execute();
+            System.err.println("heeeeeeeeeeeeeeeeeeeeeeeeere");
+        } catch (SQLException ex) {
+            Logger.getLogger(DataBaseManagement.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }
     static public ResultSet selectAllCustomers(Connection connection) {
         try {
             state = connection.createStatement();
