@@ -29,6 +29,7 @@
     sessionParameters.setAttribute("categoryValue", category);
     String field1 = (String) sessionParameters.getAttribute("priceValue");
     String field2 = (String) sessionParameters.getAttribute("categoryValue");
+    String log = request.getParameter("check");
     System.out.println(field1);
     String type = "";
 %>
@@ -67,7 +68,8 @@
                 </select>
             </div>
         </div>
-
+        <input type="hidden" name="check" value=<%=log%>>
+        <input type="hidden" name="action" value="search">
         <input type="submit" value="Search" style="margin-left: 900px">
         </form>
     </div>
@@ -139,4 +141,3 @@
 %>
 
     <jsp:include page="Footer.html" />
-

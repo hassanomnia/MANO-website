@@ -1,4 +1,3 @@
-
 <%@page import="web.shopping.Product"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
@@ -24,14 +23,14 @@
 //    System.out.println(log);
     String buttonPress = request.getParameter("button");
     System.out.println(buttonPress);
-    Product p1 = new Product(21, 1);
-    Product p2 = new Product(4, 1);
+//    Product p1 = new Product(21, 5);
+//    Product p2 = new Product(4, 2);
     List<Product> listOfProducts = new ArrayList<Product>();
 
-//    listOfProducts.add(p1);
-//    listOfProducts.add(p2);
     listOfProducts = (ArrayList<Product>) sessionParameters.getAttribute("product");
-
+    if (listOfProducts == null){
+        listOfProducts = new ArrayList<Product>();
+    }
 %>
 
 
@@ -419,14 +418,15 @@
                                             pro = listOfProducts.get(i);
                                             String productName = DataBaseManagement.getProductName(c, pro.getID());
                                             float productprice = DataBaseManagement.getProductPrice(c, pro.getID());
-                                            _total_price = _total_price + productprice * pro.getQuantity();
+                                            float price_one = productprice * pro.getQuantity();
+                                            _total_price = _total_price + price_one;
                                     %>
                                     <tbody>
                                         <tr class="cart-subtotal" >
                                             <td class="product-name" style="background-color: whitesmoke;">
                                                 <%=productName%> <strong class="product-quantity">×<%=pro.getQuantity()%></strong> </td>
                                             <td class="product-total">
-                                                <span class="amount"><%=productprice%>$</span> </td>
+                                                <span class="amount"><%=price_one%>$</span> </td>
                                         </tr>
                                     </tbody>
                                     <% }%>
@@ -506,7 +506,8 @@
                                                     DataBaseManagement.insertQuantityHistory(c, name, historyQuantityArray[i]);
                                                     DataBaseManagement.insertDateHistory(c, name);
                                                 }
-                                                ////////edit session ///////////////////
+                                                listOfProducts = new ArrayList<Product>();
+                                                sessionParameters.setAttribute("product", listOfProducts);
                                                 System.out.println(updateRowsProduct);
                                         %><p style="color: #5a88ca; text-align: center">Congratulation, Your order is placed successfully and it will reach you soon</p><%
                                         } else if (_total_price == 0) {%><p style="color: #5a88ca; text-align: center">Your cart is empty </p>
