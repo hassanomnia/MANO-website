@@ -29,23 +29,18 @@ and open the template in the editor.
      /*color:lightsteelblue;*/
 }
 
-.tablebtnt{
+.removebtn{
+     border-radius: 5px;
+     background-color: white;
+     cursor: pointer;
+     border-color: #5a88ca;
+}
 
-    border-radius: 15px;
-    border: 1px solid  #cccccc;
-    border-color: #5a88ca;
-    color: black;
-    /*color: #eeeeee;*/
-    text-align: center;
-    font-size: 14px;
-    width: 160px;
-    height:30px ;
-    cursor: pointer;
-    background-color: white;
+.removebtn:hover{
+     
+     background-color: tomato;
+     border-color: transparent;
     
 }
-.tablebtnt:hover {
-    background-color: lightsteelblue;
-     border-color: white;
-     /*color:lightsteelblue;*/
-}
+
+
