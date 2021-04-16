@@ -37,113 +37,75 @@ public class middleCart extends HttpServlet {
         HttpSession session = request.getSession(false);
         ArrayList<Product> getProducts = (ArrayList<Product>) session.getAttribute("product");
         String log = request.getParameter("check");
+        String productDetails = "";
+        String[] arrOfStr;
+        int idToModify = -1;
+        int quantityToModify;
+        Product toModifyProduct = new Product();
+        Iterator<Product> it;
+        int NewQuantity;
 
         if (request.getParameterMap().containsKey("decrement")) {
             System.out.println("decrement found");
-            String productDetails = request.getParameter("decrement");
-            String[] arrOfStr = productDetails.split(",");
+            productDetails = request.getParameter("decrement");
+        } else if (request.getParameterMap().containsKey("increment")) {
+            System.out.println("increment found");
+            productDetails = request.getParameter("increment");
+        } else if (request.getParameterMap().containsKey("delete")) {
+            System.out.println("delete found");
+            productDetails = request.getParameter("delete");
+        }
+        
+        
+        if (request.getParameterMap().containsKey("decrement") || request.getParameterMap().containsKey("increment")) {
+            arrOfStr = productDetails.split(",");
             for (String a : arrOfStr) {
                 System.out.println(a);
             }
-            int idToDectrement = Integer.parseInt(arrOfStr[0]);
-            int quantityToDectrement = Integer.parseInt(arrOfStr[1]);
+            idToModify = Integer.parseInt(arrOfStr[0]);
 
-            System.out.println("idToDectrement      " + idToDectrement + "quantityToDectrement      " + quantityToDectrement);
+            quantityToModify = Integer.parseInt(arrOfStr[1]);
 
-            Product toModifyProduct = new Product();
-            Iterator<Product> it = ((ArrayList<Product>) session.getAttribute("product")).iterator();
-            while (it.hasNext()) {
-                Product product = it.next();
-                if (product.getID() == idToDectrement) {
-                    toModifyProduct = product;
-                }
+            System.out.println("idToModify      " + idToModify + "quantityToModify       " + quantityToModify);
+        } else if (request.getParameterMap().containsKey("delete")) {
+            idToModify = Integer.parseInt(productDetails);
+            System.out.println("idToModify      " + idToModify);
+        }
+        
+        it = ((ArrayList<Product>) session.getAttribute("product")).iterator();
+        while (it.hasNext()) {
+            Product product = it.next();
+            if (product.getID() == idToModify) {
+                toModifyProduct = product;
             }
+        }
 
-            //Product toModifyProduct = new Product(idToDectrement, quantityToDectrement);
-            System.out.println("new product details      " + toModifyProduct.getID() + "quantityToDectrement      " + toModifyProduct.getQuantity());
+        System.out.println("new product details      " + toModifyProduct.getID() + "quantityToModify    " + toModifyProduct.getQuantity());
 
-            System.out.println("size before remove:    " + getProducts.size());
-            System.out.println(getProducts.contains(toModifyProduct));
-            //getProducts.add(toModifyProduct);
-            getProducts.remove(toModifyProduct);
-            System.out.println("size after remove:    " + getProducts.size());
-            int NewQuantity = toModifyProduct.getQuantity() - 1;
+        System.out.println("size before remove:    " + getProducts.size());
+        System.out.println("does product object exist?    " + getProducts.contains(toModifyProduct));
+
+        getProducts.remove(toModifyProduct);
+        
+        System.out.println("size after remove:    " + getProducts.size());
+
+        if (request.getParameterMap().containsKey("decrement")) {
+            NewQuantity = toModifyProduct.getQuantity() - 1;
             if (NewQuantity >= 0) {
                 toModifyProduct.setQuantity(NewQuantity);
             } else {
                 toModifyProduct.setQuantity(0);
+
             }
             getProducts.add(toModifyProduct);
-            session.setAttribute("product", getProducts);
-
-        }
-
-        if (request.getParameterMap().containsKey("increment")) {
-            System.out.println("increment found");
-            String productDetails = request.getParameter("increment");
-            String[] arrOfStr = productDetails.split(",");
-            for (String a : arrOfStr) {
-                System.out.println(a);
-            }
-            int idToIncrement = Integer.parseInt(arrOfStr[0]);
-            int quantityToIncrement = Integer.parseInt(arrOfStr[1]);
-
-            System.out.println("idToIncrement      " + idToIncrement + "quantityToIncrement      " + quantityToIncrement);
-
-            Product toModifyProduct = new Product();
-            Iterator<Product> it = ((ArrayList<Product>) session.getAttribute("product")).iterator();
-            while (it.hasNext()) {
-                Product product = it.next();
-                if (product.getID() == idToIncrement) {
-                    toModifyProduct = product;
-                }
-            }
-
-            //Product toModifyProduct = new Product(idToDectrement, quantityToDectrement);
-            System.out.println("new product details      " + toModifyProduct.getID() + "quantityToIncrement      " + toModifyProduct.getQuantity());
-
-            System.out.println("size before remove:    " + getProducts.size());
-            System.out.println(getProducts.contains(toModifyProduct));
-            //getProducts.add(toModifyProduct);
-            getProducts.remove(toModifyProduct);
-            System.out.println("size after remove:    " + getProducts.size());
-            int NewQuantity = toModifyProduct.getQuantity() + 1;
+        } else if (request.getParameterMap().containsKey("increment")) {
+            NewQuantity = toModifyProduct.getQuantity() + 1;
             toModifyProduct.setQuantity(NewQuantity);
             getProducts.add(toModifyProduct);
-            session.setAttribute("product", getProducts);
-
         }
 
-        if (request.getParameterMap().containsKey("delete")) {
-            System.out.println("delete found");
-            String productDetails = request.getParameter("delete");
-
-            int idToDelete = Integer.parseInt(productDetails);
-
-            System.out.println("idToIncrement      " + idToDelete);
-
-            Product toModifyProduct = new Product();
-            Iterator<Product> it = ((ArrayList<Product>) session.getAttribute("product")).iterator();
-            while (it.hasNext()) {
-                Product product = it.next();
-                if (product.getID() == idToDelete) {
-                    toModifyProduct = product;
-                }
-            }
-
-            //Product toModifyProduct = new Product(idToDectrement, quantityToDectrement);
-            System.out.println("new product details      " + toModifyProduct.getID() + "quantityToDelete     " + toModifyProduct.getQuantity());
-
-            System.out.println("size before remove:    " + getProducts.size());
-            System.out.println(getProducts.contains(toModifyProduct));
-            //getProducts.add(toModifyProduct);
-            getProducts.remove(toModifyProduct);
-            System.out.println("size after remove:    " + getProducts.size());
-            session.setAttribute("product", getProducts);
-
-        }
+        session.setAttribute("product", getProducts);
 
         response.sendRedirect("cart.jsp?action=cart&check=" + log + "");
     }
-
 }
