@@ -183,7 +183,8 @@ public class ProfileServlet extends HttpServlet {
                     String customer_birthday = result.getString("birthday");
                     String credit_info = result.getString("credit_info");
                     Integer cart_id = result.getInt("cart_id");
-                    pen.println("<tr  align=\"center\"> <td>" + customer_id + "</td> <td>" + customer_name + "</td> <td>" + "<button  class =\"tablebtn\" type=\"button\" onclick=\"location.href='ProfileForAdmin?id=" + customer_id + "&action=customers';\">Profile</button></td>" + "<td> <button  class =\"tablebtn\" type=\"button\" onclick=\"location.href='ProfileForAdmin?id=" + customer_id + "&action=customers';\">History</button></td>" + "<td><button  class =\"tablebtn\" type=\"button\" onclick=\"location.href='deletefromDb2?id=" + customer_id + "';\">Delete</button></td>" + "</tr>");
+                  
+                    pen.println("<tr  align=\"center\"> <td>" + customer_id + "</td> <td>" + customer_name + "</td> <td>" + "<button  class =\"tablebtn\" type=\"button\" onclick=\"location.href='ProfileForAdmin?id=" + customer_id + "&action=customers';\">Profile</button></td>" + "<td> <button  class =\"tablebtn\" type=\"button\" onclick=\"location.href='history.jsp?id=" + customer_id + "&action=customers';\">History</button></td>" + "<td><button  class =\"tablebtn\" type=\"button\" onclick=\"location.href='deletefromDb2?id=" + customer_id + "';\">Delete</button></td>" + "</tr>");
                 }
             }
             pen.println("<br><br></center> </body> </html>");
