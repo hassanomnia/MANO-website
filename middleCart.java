@@ -44,6 +44,7 @@ public class middleCart extends HttpServlet {
         Product toModifyProduct = new Product();
         Iterator<Product> it;
         int NewQuantity;
+        int indx = 0;
 
         if (request.getParameterMap().containsKey("decrement")) {
             System.out.println("decrement found");
@@ -77,6 +78,7 @@ public class middleCart extends HttpServlet {
             Product product = it.next();
             if (product.getID() == idToModify) {
                 toModifyProduct = product;
+                indx = getProducts.indexOf(toModifyProduct);
             }
         }
 
@@ -97,11 +99,11 @@ public class middleCart extends HttpServlet {
                 toModifyProduct.setQuantity(0);
 
             }
-            getProducts.add(toModifyProduct);
+            getProducts.add(indx,toModifyProduct);
         } else if (request.getParameterMap().containsKey("increment")) {
             NewQuantity = toModifyProduct.getQuantity() + 1;
             toModifyProduct.setQuantity(NewQuantity);
-            getProducts.add(toModifyProduct);
+            getProducts.add(indx,toModifyProduct);
         }
 
         session.setAttribute("product", getProducts);
