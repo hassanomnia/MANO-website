@@ -1,0 +1,5 @@
+FROM tomcat 
+COPY WebApplication1.war /usr/local/tomcat/webapps/
+COPY postgresql-42.2.18.jar myapp:/usr/local/tomcat/lib
+COPY  json-20210307.jar myapp:/usr/local/tomcat/lib
+COPY  mongo-java-driver-3.12.8.jar myapp:/usr/local/tomcat/lib

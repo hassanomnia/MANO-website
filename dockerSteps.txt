@@ -1,0 +1,6 @@
+1-
+sudo docker build -t manoimg .
+2-
+sudo docker container run -id -p 9090:8080 --name ManoContainer manoimg
+3- in your browser:
+http://localhost:9090/WebApplication1/index.jsp
